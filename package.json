@@ -1,0 +1,7 @@
+{
+  "name": "monkey-product-visualizer",
+  "private": true,
+  "type": "module",
+  "scripts": {"dev": "netlify dev", "build": "node -e \"console.log('Static site + Netlify Functions ready')\""},
+  "devDependencies": {"netlify-cli": "^20.0.0"}
+}

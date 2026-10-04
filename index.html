@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#102a43" />
+    <title>MONKEY · Product Visualizer</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23102a43'/%3E%3Cpath d='M16 18h32v28H16z' fill='%23f6bd60'/%3E%3Cpath d='M22 25h20M22 32h15M22 39h18' stroke='%23102a43' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>.ai-pipeline{margin-top:22px}.pipeline-head{display:flex;justify-content:space-between}.ai-pipeline h2{font-size:20px;margin:5px 0}.status-badge{font-size:12px;background:#fff5d8;border:1px solid #f0dfaa;border-radius:99px;padding:7px 11px}.pipeline-steps{display:flex;align-items:center;gap:8px;margin:25px 0 18px}.pipeline-steps>i{height:1px;background:#d7e1e9;flex:1}.pipeline-step{min-width:80px;text-align:center;color:#8aa0b3}.pipeline-step span{display:grid;place-items:center;width:28px;height:28px;margin:0 auto 6px;border:1px solid #c9d6df;border-radius:50%;font:700 10px Inter}.pipeline-step strong,.pipeline-step small{display:block}.pipeline-step strong{font:700 11px Inter;color:#597187}.pipeline-step small{font-size:10px}.pipeline-step.done span{background:var(--blue);border-color:var(--blue);color:#fff}.pipeline-step.active span{background:#f6bd60;border-color:#f6bd60;color:#fff}.pipeline-result{min-height:85px;background:#f7fafb;border:1px dashed #cddbe5;border-radius:8px;margin-bottom:15px;padding:15px}.result-placeholder{text-align:center;color:#91a2af;padding:16px}.ai-results{display:flex;gap:10px;flex-wrap:wrap}.ai-chip{background:#fff;border:1px solid #d6e2ea;border-radius:7px;padding:10px 12px;min-width:145px}.ai-chip b,.ai-chip small{display:block}.ai-chip b{font-size:13px}.ai-chip small{font-size:11px;color:var(--muted);margin-top:3px}.ai-chip em{font:700 10px Inter;color:var(--green)}</style>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand"><div class="brand-mark">M</div><div><strong>MONKEY</strong><span>Product Visualizer</span></div></div>
+        <div class="top-actions"><span class="saved"><i></i> บันทึกอัตโนมัติ</span><button class="btn ghost" id="resetBtn">เริ่มโปรเจกต์ใหม่</button><button class="btn dark" id="exportBtn">ส่งออก Presentation</button></div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="project-label">PROJECT WORKSPACE</div>
+          <h2 id="projectTitle">Summer Pop-up Store</h2>
+          <p class="muted">Campaign 2025 · Draft 01</p>
+          <nav class="steps">
+            <button class="step active" data-view="scene"><b>01</b><span>ตั้งค่าฉาก<br><small>Perspective & Fixture</small></span><em>✓</em></button>
+            <button class="step" data-view="products"><b>02</b><span>เลือกสินค้า<br><small>Product Library</small></span><em>2</em></button>
+            <button class="step" data-view="box"><b>03</b><span>จัดชุดสินค้า<br><small>Box Configuration</small></span><em>3</em></button>
+            <button class="step" data-view="board"><b>04</b><span>สรุป Board<br><small>Review & Export</small></span><em>→</em></button>
+          </nav>
+          <div class="side-card"><div class="side-card-icon">✦</div><div><strong>Quick tip</strong><p>เริ่มจากภาพฉาก แล้วเลือกสินค้าเพื่อสร้างชุดนำเสนอ</p></div></div>
+          <div class="user"><div class="avatar">NN</div><div><strong>Nink N.</strong><span>Designer</span></div><span class="dots">•••</span></div>
+        </aside>
+        <main class="content">
+          <section class="view active" id="sceneView">
+            <div class="page-head"><div><p class="eyebrow">STEP 01 · SCENE SETUP</p><h1>เริ่มต้นจากภาพฉากของคุณ</h1><p class="lead">อัปโหลดภาพ Perspective เพื่อสร้างพื้นที่ทดลองวางสินค้า</p></div><div class="progress"><span>1</span><i></i><span>2</span><i></i><span>3</span><i></i><span>4</span></div></div>
+            <div class="scene-grid">
+              <div class="upload-card" id="uploadCard"><input type="file" id="fileInput" accept="image/*" hidden /><div class="upload-art"><div class="room"><div class="backwall"></div><div class="floor"></div><div class="shelf"></div><div class="plant"></div></div></div><div class="upload-copy"><h3>ลากไฟล์ภาพมาวางที่นี่</h3><p>หรือเลือกไฟล์จากเครื่องของคุณ · JPG, PNG ไม่เกิน 10 MB</p><button class="btn dark" id="chooseBtn">เลือกภาพ Perspective</button></div></div>
+              <div class="panel"><div class="panel-title"><span>Fixture ที่ตรวจพบ</span><span class="pill">AI SUGGESTION</span></div><p class="muted">เลือกองค์ประกอบที่ต้องการใช้เป็นฐานในการวางสินค้า</p><div class="fixture-list"><label class="fixture selected"><input type="checkbox" checked /><span class="fixture-thumb table"></span><span><strong>Display Table</strong><small>โต๊ะจัดแสดง · 120 × 60 cm</small></span><b>✓</b></label><label class="fixture selected"><input type="checkbox" checked /><span class="fixture-thumb wall"></span><span><strong>Back Wall</strong><small>ผนังด้านหลัง · 240 × 280 cm</small></span><b>✓</b></label><label class="fixture"><input type="checkbox" /><span class="fixture-thumb floor"></span><span><strong>Floor Area</strong><small>พื้นห้อง · 360 × 300 cm</small></span><b>+</b></label></div><button class="btn outline full" id="continueProducts">ยืนยันฉากและเลือกสินค้า <span>→</span></button></div>
+            </div>
+            <div class="notice"><span>✧</span><div><strong>ภาพตัวอย่างสำหรับการนำเสนอ</strong><p>ระบบเดโมนี้จำลองการแยกองค์ประกอบจากภาพด้วย AI เพื่อให้ทีมเห็นภาพการทำงานในขั้นต่อไป</p></div></div>
+            <div class="ai-pipeline panel"><div class="pipeline-head"><div><p class="eyebrow">AI PIPELINE · DEMO MODE</p><h2>วิเคราะห์ภาพและแนะนำวัสดุ</h2><p class="muted">จำลองขั้นตอน AI ตั้งแต่แยกระนาบไปจนถึงเลือกวัสดุที่ใกล้เคียง</p></div><span class="status-badge" id="aiStatus">พร้อมเริ่มวิเคราะห์</span></div><div class="pipeline-steps"><div class="pipeline-step" data-pipeline="1"><span>01</span><strong>Detect</strong><small>ตรวจจับวัตถุ</small></div><i></i><div class="pipeline-step" data-pipeline="2"><span>02</span><strong>Segment</strong><small>แยกระนาบ / Mask</small></div><i></i><div class="pipeline-step" data-pipeline="3"><span>03</span><strong>Analyze</strong><small>วิเคราะห์วัสดุ</small></div><i></i><div class="pipeline-step" data-pipeline="4"><span>04</span><strong>Match</strong><small>ค้นหาของคล้าย</small></div><i></i><div class="pipeline-step" data-pipeline="5"><span>05</span><strong>Preview</strong><small>ทดลองวางในภาพ</small></div></div><div class="pipeline-result" id="pipelineResult"><div class="result-placeholder">กดปุ่มเพื่อเริ่มจำลอง AI Pipeline</div></div><button class="btn dark" id="runAI">▶ เริ่มวิเคราะห์ภาพด้วย AI</button></div>
+          </section>
+          <section class="view" id="productsView">
+            <div class="page-head"><div><p class="eyebrow">STEP 02 · PRODUCT LIBRARY</p><h1>เลือกสินค้าที่จะนำเสนอ</h1><p class="lead">เลือกสินค้าเพื่อทดลองจัดวางในฉากของคุณ</p></div><button class="btn outline" id="backScene">← กลับไปแก้ฉาก</button></div>
+            <div class="toolbar"><div class="search">⌕ <input id="searchInput" placeholder="ค้นหาชื่อสินค้า, code หรือ brand..." /></div><div class="filter" id="categoryFilter">ทั้งหมด⌄</div><span class="selected-count">เลือกแล้ว <b id="selectedCount">2</b> รายการ</span></div>
+            <div class="product-grid" id="productGrid"></div>
+            <div class="bottom-bar"><span><b id="selectedCountBottom">2</b> รายการพร้อมจัดลงกล่อง</span><button class="btn dark" id="continueBox">ไปต่อ: จัดชุดสินค้า <span>→</span></button></div>
+          </section>
+          <section class="view" id="boxView">
+            <div class="page-head"><div><p class="eyebrow">STEP 03 · BOX CONFIGURATION</p><h1>จัดชุดสินค้าและแพ็กเกจ</h1><p class="lead">ทดลองจัดกลุ่มสินค้า พร้อมดูรายละเอียดเพื่อคุยกับลูกค้า</p></div><button class="btn outline" id="backProducts">← กลับไปเลือกสินค้า</button></div>
+            <div class="box-layout"><div class="box-preview"><div class="box-label">BOX A · SUMMER GIFT SET</div><div class="box-visual"><div class="lid"></div><div class="box-inner"><div class="box-item item-one">☕</div><div class="box-item item-two">✦</div><div class="box-item item-three">▤</div></div></div><div class="box-caption"><strong>Summer Gift Set</strong><span>3 items · กล่องกระดาษคราฟต์</span></div></div><div class="panel details"><div class="panel-title"><span>รายละเอียดชุดสินค้า</span><button class="text-btn">แก้ไข</button></div><div class="detail-row"><span>Brand</span><strong>MONKEY HOUSE</strong></div><div class="detail-row"><span>Contract</span><strong>MNK-S25-014</strong></div><div class="detail-row"><span>Size</span><strong>28 × 20 × 10 cm</strong></div><div class="detail-row"><span>Price</span><strong>฿ 1,280.00</strong></div><div class="detail-row"><span>Lead time</span><strong>14–21 วัน</strong></div><div class="detail-row"><span>Minimum</span><strong>50 ชุด</strong></div><hr /><div class="panel-title"><span>สินค้าในชุด</span><span class="pill green">3 SELECTED</span></div><div id="boxItems" class="box-items"></div><button class="btn outline full">+ เพิ่มสินค้าในชุด</button></div></div>
+            <div class="box-footer"><div><span class="muted">ราคาประเมินรวม</span><strong>฿ 64,000 <small>/ 50 ชุด</small></strong></div><button class="btn dark" id="continueBoard">ดู Board สรุปงาน <span>→</span></button></div>
+          </section>
+          <section class="view" id="boardView">
+            <div class="page-head"><div><p class="eyebrow">STEP 04 · PRESENTATION BOARD</p><h1>Board พร้อมนำเสนอ</h1><p class="lead">สรุปฉาก สินค้า และรายละเอียดสำหรับพรีเซนต์ลูกค้าในหน้าเดียว</p></div><div class="board-actions"><button class="btn outline" id="backBox">← แก้ไขชุดสินค้า</button><button class="btn dark" id="printBtn">⌁ พิมพ์ / บันทึก PDF</button></div></div>
+            <div class="board"><div class="board-head"><div><span class="board-kicker">MONKEY HOUSE · CONCEPT BOARD</span><h2>Summer Pop-up Store</h2><p>Product selection & visual direction · 2025</p></div><div class="board-number">01</div></div><div class="board-main"><div class="board-scene"><div class="board-scene-art"><div class="bs-wall"></div><div class="bs-floor"></div><div class="bs-table"></div><div class="bs-display">PRODUCT<br/>DISPLAY</div></div><span>01 / Perspective & Fixture</span></div><div class="board-product"><div class="mini-box"><div class="mini-lid"></div><div class="mini-content">☕ ✦ ▤</div></div><div><span>02 / Selected Product Set</span><h3>Summer Gift Set</h3><p>3 items · Custom packaging</p></div></div></div><div class="board-table"><div class="bt-head"><span>Product</span><span>Code</span><span>Lead time</span><span>Price</span></div><div class="bt-row"><span><b>01</b> Ceramic Cup</span><span>MNK-001</span><span>14 days</span><span>฿ 420</span></div><div class="bt-row"><span><b>02</b> Cotton Pouch</span><span>MNK-014</span><span>21 days</span><span>฿ 280</span></div><div class="bt-row"><span><b>03</b> Gift Box</span><span>MNK-022</span><span>14 days</span><span>฿ 580</span></div></div><div class="board-foot"><span>Prepared by Nink N. · Draft 01</span><span>MONKEY / INTERNAL PRESENTATION</span></div></div>
+          </section>
+        </main>
+      </div>
+      <div id="toast" class="toast">บันทึกการเปลี่ยนแปลงแล้ว</div>
+    </div>
+    <script src="app.js"></script>
+    <script>const aiStages=[['กำลังตรวจจับวัตถุในภาพ...','พบ Display Table, Back Wall และ Floor Area'],['กำลังสร้าง Mask และแยกระนาบ...','แยกได้ 3 ระนาบ · ความมั่นใจ 94%'],['กำลังวิเคราะห์สีและพื้นผิว...','พบโทนไม้โอ๊คอ่อน, ครีม และเขียวหม่น'],['กำลังค้นหาวัสดุที่ใกล้เคียง...','พบวัสดุแนะนำ 4 รายการจาก Product Library'],['กำลังสร้าง Preview สำหรับนำเสนอ...','พร้อมทดลองวางวัสดุบนฉากแล้ว']];document.querySelector('#runAI').onclick=()=>{let i=0,b=document.querySelector('#runAI');b.disabled=true;b.textContent='กำลังประมวลผล...';document.querySelector('#aiStatus').textContent='กำลังวิเคราะห์';let t=setInterval(()=>{i++;document.querySelectorAll('.pipeline-step').forEach((e,n)=>{e.classList.toggle('done',n<i);e.classList.toggle('active',n===i-1)});document.querySelector('#pipelineResult').innerHTML='<div class="ai-results"><div class="ai-chip"><b>'+aiStages[i-1][0]+'</b><small>'+aiStages[i-1][1]+'</small><em>'+ (i<5?'PROCESSING':'COMPLETE') +'</em></div></div>';if(i===5){clearInterval(t);b.disabled=false;b.textContent='↻ วิเคราะห์ใหม่';document.querySelector('#aiStatus').textContent='วิเคราะห์เสร็จแล้ว';document.querySelector('#pipelineResult').innerHTML='<div class="ai-results"><div class="ai-chip"><b>พื้น · Light Oak</b><small>ความคล้าย 96% · Warm wood</small><em>RECOMMENDED</em></div><div class="ai-chip"><b>ผนัง · Warm White</b><small>ความคล้าย 92% · Matte paint</small><em>RECOMMENDED</em></div><div class="ai-chip"><b>โต๊ะ · Natural Oak</b><small>ความคล้าย 89% · Veneer</small><em>RECOMMENDED</em></div><div class="ai-chip"><b>Accent · Sage Green</b><small>ความคล้าย 84% · Fabric</small><em>OPTION</em></div></div>';toast('AI วิเคราะห์ภาพและแนะนำวัสดุเรียบร้อยแล้ว')}},650)};</script>
+    <script>
+      document.querySelector('#runAI').onclick = async () => {
+        if (!window.sceneImageData) { toast('กรุณาอัปโหลดภาพก่อนเริ่มวิเคราะห์'); return; }
+        const button=document.querySelector('#runAI'); button.disabled=true; button.textContent='กำลังส่งภาพให้ OpenAI...';
+        try { const res=await fetch('/api/analyze-image',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({imageDataUrl:window.sceneImageData})}); const data=await res.json(); if(!res.ok) throw new Error(data.error||'Analysis failed');
+          document.querySelectorAll('.pipeline-step').forEach(e=>e.classList.add('done')); document.querySelector('#aiStatus').textContent='วิเคราะห์เสร็จแล้ว';
+          const planes=(data.analysis.planes||[]).map(p=>`<div class="ai-chip"><b>${p.name}</b><small>${p.description}</small><em>${Math.round((p.confidence||0)*100)}% CONFIDENCE</em></div>`).join('');
+          const mats=(data.materials||[]).map(m=>`<div class="ai-chip"><b>${m.name}</b><small>${m.category} · ${m.color||''}</small><em>${m.sku}</em></div>`).join('');
+          document.querySelector('#pipelineResult').innerHTML=`<p class="muted"><b>Visual profile:</b> ${(data.analysis.visual_profile?.style||'')} · ${(data.analysis.visual_profile?.materials||[]).join(', ')}</p><div class="ai-results">${planes}${mats}</div>`; toast(data.source==='supabase'?'วิเคราะห์ภาพและค้นหาวัสดุจาก Supabase สำเร็จ':'วิเคราะห์ภาพด้วย OpenAI สำเร็จ');
+        } catch(e) { document.querySelector('#pipelineResult').innerHTML=`<div class="result-placeholder">${e.message}</div>`; toast('วิเคราะห์ไม่สำเร็จ กรุณาตรวจสอบ Environment Variables'); } finally { button.disabled=false; button.textContent='↻ วิเคราะห์ใหม่'; }
+      };
+    </script>
+  </body>
+</html>
