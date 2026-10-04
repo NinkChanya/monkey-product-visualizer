@@ -6,7 +6,7 @@ export default async (request) => {
   if (!imageDataUrl?.startsWith('data:image/')) return json(400, { error: 'imageDataUrl is required' });
   if (!process.env.GEMINI_API_KEY) return json(500, { error: 'Missing GEMINI_API_KEY in Netlify environment variables' });
   const prompt = `Analyze this interior/product display image for a materials visualization workflow. Return valid JSON only with this shape: {"planes":[{"name":"floor|wall|table|object","description":"...","confidence":0.0}],"visual_profile":{"colors":[],"materials":[],"style":"..."},"recommendations":[{"name":"...","category":"...","reason":"...","confidence":0.0}]}. Do not claim pixel-perfect segmentation; describe likely visible planes and objects. Use Thai descriptions where practical.`;
-  const model = process.env.GEMINI_VISION_MODEL || 'gemini-2.5-flash';
+  const model = process.env.GEMINI_VISION_MODEL || 'gemini-3.8-flash';
   const ai = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: imageDataUrl.match(/^data:(image\/[^;]+);/)?.[1] || 'image/jpeg', data: imageDataUrl.split(',')[1] } }] }], generationConfig: { responseMimeType: 'application/json' } }) });
   if (!ai.ok) return json(ai.status, { error: 'Gemini analysis failed', detail: await ai.text() });
   const payload = await ai.json();
