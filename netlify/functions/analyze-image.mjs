@@ -1,4 +1,4 @@
-const json = (statusCode, body) => ({ statusCode, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
+const json = (statusCode, body) => new Response(JSON.stringify(body), { status: statusCode, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } });
 
 export default async (request) => {
   if (request.httpMethod !== 'POST') return json(405, { error: 'POST only' });
