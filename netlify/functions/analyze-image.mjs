@@ -1,8 +1,8 @@
 const json = (statusCode, body) => new Response(JSON.stringify(body), { status: statusCode, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } });
 
 export default async (request) => {
-  if (request.httpMethod !== 'POST') return json(405, { error: 'POST only' });
-  const { imageDataUrl, projectId = null } = JSON.parse(request.body || '{}');
+  if (request.method !== 'POST') return json(405, { error: 'POST only' });
+  const { imageDataUrl, projectId = null } = await request.json();
   if (!imageDataUrl?.startsWith('data:image/')) return json(400, { error: 'imageDataUrl is required' });
   if (!process.env.OPENAI_API_KEY) return json(500, { error: 'Missing OPENAI_API_KEY in Netlify environment variables' });
   const prompt = `Analyze this interior/product display image for a materials visualization workflow. Return valid JSON only with this shape: {"planes":[{"name":"floor|wall|table|object","description":"...","confidence":0.0}],"visual_profile":{"colors":[],"materials":[],"style":"..."},"recommendations":[{"name":"...","category":"...","reason":"...","confidence":0.0}]}. Do not claim pixel-perfect segmentation; describe likely visible planes and objects. Use Thai descriptions where practical.`;
