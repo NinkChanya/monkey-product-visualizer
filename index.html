@@ -64,7 +64,7 @@
       document.querySelector('#runAI').onclick = async () => {
         if (!window.sceneImageData) { toast('กรุณาอัปโหลดภาพก่อนเริ่มวิเคราะห์'); return; }
         const button=document.querySelector('#runAI'); button.disabled=true; button.textContent='กำลังส่งภาพให้ OpenAI...';
-        try { const res=await fetch('/.netlify/functions/analyze-image',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({imageDataUrl:window.sceneImageData})}); const data=await res.json(); if(!res.ok) throw new Error(data.error||data.detail||`Function HTTP ${res.status}`);
+        try { const res=await fetch('/.netlify/functions/analyze-image',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({imageDataUrl:window.sceneImageData})}); const data=await res.json(); if(!res.ok) throw new Error(data.detail||data.error||`Function HTTP ${res.status}`);
           document.querySelectorAll('.pipeline-step').forEach(e=>e.classList.add('done')); document.querySelector('#aiStatus').textContent='วิเคราะห์เสร็จแล้ว';
           const planes=(data.analysis.planes||[]).map(p=>`<div class="ai-chip"><b>${p.name}</b><small>${p.description}</small><em>${Math.round((p.confidence||0)*100)}% CONFIDENCE</em></div>`).join('');
           const mats=(data.materials||[]).map(m=>`<div class="ai-chip"><b>${m.name}</b><small>${m.category} · ${m.color||''}</small><em>${m.sku}</em></div>`).join('');
